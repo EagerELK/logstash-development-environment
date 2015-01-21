@@ -1,0 +1,27 @@
+---
+- hosts: all
+  sudo: true
+  vars:
+    jruby_version: 1.7.18
+  tasks:
+    # This is just to set up jruby
+    - name: Download jruby
+      get_url: url=https://s3.amazonaws.com/jruby.org/downloads/{{ jruby_version }}/jruby-bin-{{ jruby_version }}.tar.gz dest=/vagrant/jruby-bin-{{ jruby_version }}.tar.gz
+    - name: Extract the jruby archive
+      unarchive: copy=no src=/vagrant/jruby-bin-{{ jruby_version }}.tar.gz dest=/opt/ creates=/opt/jruby-{{ jruby_version }}
+    - name: Install dependencies
+      apt: "name={{ item }} state=latest"
+      with_items:
+        - git
+        - openjdk-7-jdk
+    - name: Set JRUBY_HOME
+      lineinfile: dest=/etc/environment state=present line=JRUBY_HOME=/opt/jruby-{{ jruby_version }}
+    - name: Add JRuby to the path
+      lineinfile: dest=/etc/environment state=present line=PATH={{ lookup('env', 'PATH') }};/opt/jruby-{{ jruby_version }}/bin regexp=^PATH=.*;/opt/jruby-{{ jruby_version }}/bin.*$
+    - name: Support gems
+      gem: "name={{ item }} state=latest user_install=no"
+      with_items:
+        - bundler
+        - rspec
+    # And then logstash
+    - git: repo=https://github.com/elasticsearch/logstash.git dest=/vagrant/logstash
