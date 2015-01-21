@@ -15,9 +15,9 @@
         - git
         - openjdk-7-jdk
     - name: Set JRUBY_HOME
-      lineinfile: dest=/etc/environment state=present line=JRUBY_HOME=/opt/jruby-{{ jruby_version }}
+      lineinfile: dest=/etc/environment state=present line="JRUBY_HOME=/opt/jruby-{{ jruby_version }}"
     - name: Add JRuby to the path
-      lineinfile: dest=/etc/environment state=present line=PATH={{ lookup('env', 'PATH') }};/opt/jruby-{{ jruby_version }}/bin regexp=^PATH=.*;/opt/jruby-{{ jruby_version }}/bin.*$
+      lineinfile: dest=/etc/environment state=present line="PATH={{ lookup('env', 'PATH') }}:/opt/jruby-{{ jruby_version }}/bin" regexp=^PATH=
     - name: Support gems
       gem: "name={{ item }} state=latest user_install=no"
       with_items:
