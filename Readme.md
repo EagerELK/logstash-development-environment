@@ -2,19 +2,9 @@
 
 If you're keen to contribute to the Logstash project, you can do so by either contributing to the main [Logstash project][1] or to any of the [Logstash plugins][2]. Which ever you choose, you'll need to set up your Logstash development environment. This post will take you through setting it up.<!-- more -->
 
-This has been formalized as an [Ansible playbook][3], but for completeness here are the manual steps.
+This can either by done by using a tool such as [rvm][4] or [rbenv][5], or, by following the steps set out below.  Both the manual method, as well as using rvm has been formalized as [Ansible playbooks][3].
 
-## 1. Install JRuby
-
-This can either by done by using a tool such as [rmv][4] or [rbenv][5], or, if you want to do it manually:
-
-* Download and extract the version of JRuby you want
-* Set `JRUBY_HOME` and add `JRUBY_HOME/bin` to the `PATH` environment variable. This is best done in `/etc/environment`
-* Install the bundler and rspec gems:
-    * `gem install bundler`
-    * `gem install rspec`
-
-## 2. Install Dependencies
+## 1. Install Dependencies
 
 You need to ensure that you have a JDK installed. Git is also a good idea. On Ubuntu you can do the following:
 
@@ -22,17 +12,42 @@ You need to ensure that you have a JDK installed. Git is also a good idea. On Ub
 sudo apt-get install git openjdk-7-jdk
 ~~~
 
+## 2. Install JRuby
+
+* Download and extract the version of JRuby you want
+* Set `JRUBY_HOME` and add `JRUBY_HOME/bin` to the `PATH` environment variable. This is best done in `/etc/environment`
+* Install the bundler and rspec gems:
+    * `gem install bundler`
+    * `gem install rspec`
+
 ## 3. Get the source
 
-All that's left is to get the source of Logstash (or the plugin) you want to work on:
+All that's left is to get the source of Logstash (or the plugin) you want to work on, and initialize the install:
 
 ~~~
 git clone https://github.com/elasticsearch/logstash.git
+cd logstash
+bundle install
 ~~~
+
+Or, if you're working on a plugin:
+
+~~~
+git clone https://github.com/logstash-plugins/logstash-filter-mutate.git
+cd logstash-filter-mutate
+bundle install
+~~~
+
+If bundle install fails, it might be that bundle / ruby is pointing to a MRI installation of Ruby, not the JRuby version. The error messages you're likely to receive are as follows:
+
+~~~
+~~~
+
+Ensure that you're using the JRuby gem command when installing and invoking bundler.
 
 ## 4. Get to work
 
-If you're working on a plugin, you need to run `bundle install` in the plugin's root. This will add the logstash source to the plugin (as it depends on logstash) and also add anything else you might need to test and develop the plugin. You can now run `bundle exec rspec` to run the tests for the plugin.
+If `bundle install` was successful, the logstash base would have been initialized with the necessary gems and plugins. If you're developing a plugin, the logstash source would have been added as a gem dependency, and you'll be ready to start developing and testing it. You can now run `bundle exec rspec` to run the tests for the plugin.
 
 ## Extra Resources
 

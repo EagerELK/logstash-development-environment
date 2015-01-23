@@ -1,0 +1,14 @@
+---
+- hosts: all
+  sudo: true
+  vars:
+    rvm1_rubies:
+      - jruby-1.7.18
+  pre_tasks:
+    - name: Install dependencies
+      apt: "name={{ item }} state=latest"
+      with_items:
+        - git
+        - maven
+  roles:
+    - rvm
