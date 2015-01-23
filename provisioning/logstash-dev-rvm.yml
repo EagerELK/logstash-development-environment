@@ -12,3 +12,6 @@
         - maven
   roles:
     - rvm
+  tasks:
+    - name: Ensure that the gem home is set properly
+      lineinfile: dest=/home/vagrant/.bashrc state=present line='export GEM_HOME=$(ruby -e 'puts Gem.user_dir')'

@@ -38,12 +38,26 @@ cd logstash-filter-mutate
 bundle install
 ~~~
 
-If bundle install fails, it might be that bundle / ruby is pointing to a MRI installation of Ruby, not the JRuby version. The error messages you're likely to receive are as follows:
+If `bundle install` or `bundle exec rspec` fails, it might be that bundle / ruby is pointing to a MRI installation of Ruby, not the JRuby version. The error messages you're likely to receive are as follows:
 
 ~~~
+$ bundle install
+Gem::FilePermissionError: You don't have write permissions for the /usr/local/rvm/gems/jruby-1.7.18/bin directory.
 ~~~
 
-Ensure that you're using the JRuby gem command when installing and invoking bundler.
+The fix for this is to add `export GEM_HOME=$(ruby -e 'puts Gem.user_dir')` to your `.bashrc` file.
+
+~~~
+$ bundle exec rspec
+You have requested:
+  logstash-devutils >= 0
+
+The bundle currently has logstash-devutils locked at 0.0.7.
+Try running `bundle update logstash-devutils`
+Run `bundle install` to install missing gems.
+~~~
+
+You're probably using an MRI install of bundler. Ensure that you switch to JRuby and install the JRuby gems.
 
 ## 4. Get to work
 
