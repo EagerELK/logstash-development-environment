@@ -8,6 +8,8 @@
       get_url: url=https://s3.amazonaws.com/jruby.org/downloads/{{ jruby_version }}/jruby-bin-{{ jruby_version }}.tar.gz dest=/vagrant/jruby-bin-{{ jruby_version }}.tar.gz
     - name: Extract the JRuby archive
       unarchive: copy=no src=/vagrant/jruby-bin-{{ jruby_version }}.tar.gz dest=/opt/ creates=/opt/jruby-{{ jruby_version }}
+    - name: Update APT
+      apt: update_cache=yes cache_valid_time=3600
     - name: Install dependencies
       apt: "name={{ item }} state=latest"
       with_items:

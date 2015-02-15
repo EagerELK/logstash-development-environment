@@ -3,15 +3,25 @@
   sudo: true
   vars:
     rvm1_rubies:
-      - jruby-1.7.18
+      - jruby
+    rvm1_install_flags: '--auto-dotfiles --user-install'
+    rvm1_install_path: '/home/{{ ansible_ssh_user }}/.rvm'
   pre_tasks:
+    - name: Update APT
+      apt: update_cache=yes cache_valid_time=3600
     - name: Install dependencies
       apt: "name={{ item }} state=latest"
       with_items:
         - git
         - maven
+    - name: Get the real JAVA_HOME
+      shell: readlink -f `which java` | sed "s/\/bin\/java$//"
+      register: java_home
+      always_run: true
+    - name: Ensure that the java home is set properly
+      lineinfile: dest=/home/vagrant/.bashrc state=present line='export JAVA_HOME={{ java_home.stdout }}'
   roles:
-    - rvm
+    - rvm # From https://github.com/rvm/rvm1-ansible
   tasks:
     - name: Ensure that the gem home is set properly
       lineinfile: dest=/home/vagrant/.bashrc state=present line='export GEM_HOME=$(ruby -e 'puts Gem.user_dir')'
