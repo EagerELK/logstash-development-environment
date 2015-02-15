@@ -16,6 +16,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision 'ansible' do |ansible|
     #ansible.playbook = 'provisioning/logstash-dev-manual.yml'
-    ansible.playbook = 'provisioning/logstash-dev-rmv.yml'
+    ansible.playbook = 'provisioning/logstash-dev-rvm.yml'
   end
 end
