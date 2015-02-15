@@ -67,6 +67,12 @@ If `bundle install` was successful, the logstash base would have been initialize
 
 * Elasticsearch post on [plugin changes][6]
 * [Ansible playbook and Vagrant setup][3] that automates all of this.
+* [Ansible playbook to install RVM][7]
+* [EagerELK - The Elasticsearcmh, Logstash and Kibana][8] Blog
+
+--------------------------
+
+Created and Maintained by [Jrgns][9], maintainer of [EagerELK][8].
 
 [1]: https://github.com/elasticsearch/logstash/
 [2]: https://github.com/logstash-plugins/
@@ -74,3 +80,7 @@ If `bundle install` was successful, the logstash base would have been initialize
 [4]: https://rvm.io/
 [5]: http://rbenv.org/
 [6]: http://www.elasticsearch.org/blog/plugin-ecosystem-changes/
+[7]: https://github.com/rvm/rvm1-ansible
+[8]: http://blog.eagerelk.com/
+[9]: http://jrgns.net
+
